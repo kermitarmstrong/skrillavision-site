@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---------- Colors ---------- */
+  --color-night: #0A0A0A;
+  --color-deck: #141414;
+  --color-edge: #1F1F1F;
+  --color-bone: #FAFAFA;
+  --color-ash: #A3A3A3;
+  --color-smoke: #6B6B6B;
+  --color-acid: #C6FF3D;
+  --color-acid-dim: #7B9B26;
+
+  /* ---------- Fonts ---------- */
+  --font-display: "Bricolage Grotesque", "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* ---------- Custom easing ---------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+/* ---------- Base layer ---------- */
+@layer base {
+  html {
+    background-color: var(--color-night);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Subtle radial vignette behind everything */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top, rgba(198, 255, 61, 0.04), transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(198, 255, 61, 0.02), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Selection color */
+  ::selection {
+    background: var(--color-acid);
+    color: var(--color-night);
+  }
+
+  /* Headings inherit display family by default */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--color-night); }
+  ::-webkit-scrollbar-thumb { background: var(--color-edge); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-smoke); }
+
+  /* Focus outline (accessibility) */
+  :focus-visible {
+    outline: 2px solid var(--color-acid);
+    outline-offset: 3px;
+  }
+}
+
+/* ---------- Utility classes ---------- */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  /* Acid glow on hover for interactive elements */
+  .acid-glow {
+    transition: box-shadow 0.3s var(--ease-out-expo), color 0.2s ease;
+  }
+  .acid-glow:hover {
+    box-shadow: 0 0 24px rgba(198, 255, 61, 0.25);
+  }
+
+  /* Standard section padding */
+  .section-px { padding-inline: clamp(1.25rem, 4vw, 4rem); }
+  .section-py { padding-block: clamp(4rem, 10vw, 8rem); }
+}
+
+/* ---------- Lenis smooth scroll required styles ---------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }

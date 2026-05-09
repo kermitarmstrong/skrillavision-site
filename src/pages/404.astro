@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="404 — Signal Lost">
+  <section class="min-h-screen flex flex-col items-center justify-center section-px text-center">
+    <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-6">
+      Signal lost
+    </p>
+    <h1 class="font-display text-7xl md:text-9xl font-extrabold">404</h1>
+    <p class="mt-6 text-ash text-lg max-w-md text-balance">
+      The page you're looking for doesn't exist or has been moved.
+    </p>
+    <a
+      href="/"
+      class="mt-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-acid hover:text-bone transition-colors"
+    >
+      → Return to feed
+    </a>
+  </section>
+</BaseLayout>

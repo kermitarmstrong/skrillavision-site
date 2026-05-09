@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout>
+  <section class="min-h-screen flex flex-col items-center justify-center section-px text-center">
+    <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-6">
+      System Online
+    </p>
+    <h1 class="font-display text-7xl md:text-9xl font-extrabold text-balance">
+      {site.name}
+    </h1>
+    <p class="mt-6 text-ash text-lg max-w-xl text-balance">
+      Foundation deployed. Hero, gallery, and pages incoming.
+    </p>
+    <div class="mt-12 font-mono text-xs text-smoke">
+      <span class="text-acid">●</span> Phase 1 of 8 complete
+    </div>
+  </section>
+</BaseLayout>
