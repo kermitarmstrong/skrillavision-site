@@ -21,3 +21,6 @@ pnpm-debug.log*
 .idea/
 .DS_Store
 Thumbs.db
+
+# claude code session artifacts
+.claude/
