@@ -1,8 +1,97 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ComingSoon from "../components/ComingSoon.astro";
+import { site } from "../data/site";
+
+const about = site.about.full;
+const isPlaceholderPortrait = about.portrait.endsWith(".gitkeep");
 ---
 
-<BaseLayout title="About">
-  <ComingSoon pageName="About" />
+<BaseLayout
+  title="About"
+  description={`${about.intro} ${about.bio}`}
+>
+  <!-- Page header -->
+  <section class="section-px pt-32 pb-16 md:pt-40 md:pb-20">
+    <div class="max-w-5xl mx-auto">
+      <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-4">
+        {about.eyebrow}
+      </p>
+      <h1 class="font-display text-5xl md:text-7xl font-extrabold leading-[0.95] text-balance mb-8">
+        {about.headline}
+      </h1>
+      <p class="text-ash text-lg md:text-xl text-pretty max-w-2xl">
+        {about.intro}
+      </p>
+    </div>
+  </section>
+
+  <!-- Bio + Portrait -->
+  <section class="section-px py-16 md:py-24 relative">
+    <!-- Subtle atmospheric tint -->
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-transparent via-deck/30 to-transparent pointer-events-none"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+      <!-- Portrait -->
+      <div class="relative aspect-[4/5] overflow-hidden bg-deck border border-edge order-first">
+        {isPlaceholderPortrait ? (
+          <div class="absolute inset-0 bg-gradient-to-br from-deck to-night flex items-center justify-center">
+            <div class="text-center px-6">
+              <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-2">
+                Placeholder
+              </p>
+              <p class="font-mono text-xs text-smoke">
+                Drop portrait.jpg into /media/about/
+              </p>
+            </div>
+          </div>
+        ) : (
+          <img
+            src={about.portrait}
+            alt="SkrillaVision portrait"
+            class="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+        )}
+      </div>
+
+      <!-- Bio -->
+      <div>
+        <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-4">
+          Bio
+        </p>
+        <p class="text-ash text-lg md:text-xl text-pretty">
+          {about.bio}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities -->
+  <section class="section-px py-16 md:py-24">
+    <div class="max-w-7xl mx-auto">
+      <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-4">
+        01 — Capabilities
+      </p>
+      <h2 class="font-display text-4xl md:text-6xl font-extrabold mb-12 md:mb-16 leading-[1.05] text-balance">
+        What I do.
+      </h2>
+
+      <!-- Grid with thin acid-edge borders between cells (gap-px + bg-edge trick) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-edge border border-edge">
+        {about.specialties.map((spec, i) => (
+          <div class="bg-night p-6 md:p-8 flex items-start gap-4 transition-colors hover:bg-deck">
+            <span class="font-mono text-xs text-acid mt-1 flex-shrink-0">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <h3 class="font-display text-lg md:text-xl font-bold leading-tight text-bone">
+              {spec}
+            </h3>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 </BaseLayout>

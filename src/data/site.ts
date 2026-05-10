@@ -22,11 +22,7 @@ export const site = {
     secondaryCta: { label: "Get in touch", href: "/contact" },
   },
 
-  // ---------- About teaser (homepage) ----------
-  // To swap in the real portrait:
-  //   1. Drop portrait.jpg (or any image) into /public/media/about/
-  //   2. Update the `image` value below to point at it (e.g. "/media/about/portrait.jpg")
-  // Until then, the .gitkeep path triggers the styled placeholder card on the homepage.
+  // ---------- About teaser (homepage) and full About page ----------
   about: {
     teaser: {
       headline: "Visual storytelling for live events.",
@@ -34,6 +30,26 @@ export const site = {
         "SkrillaVision creates immersive visual experiences for festivals, clubs, and corporate stages. Every show is built around the energy in the room — projection mapping, custom content, and live VJ performance designed to amplify the moment.",
       image: "/media/about/.gitkeep",
       cta: { label: "More about SkrillaVision", href: "/about" },
+    },
+    // Full About page — currently placeholder copy. Edit these strings to
+    // customize the page. Drop portrait.jpg into /public/media/about/ and
+    // update `portrait` to point at it.
+    full: {
+      eyebrow: "About",
+      headline: "Visual artist for live events.",
+      intro:
+        "SkrillaVision is the work of an artist focused on creating immersive visual experiences for festivals, clubs, and corporate events.",
+      bio:
+        "Real bio content is in development. Check back soon, or get in touch directly to learn more about current work and bookings.",
+      portrait: "/media/about/.gitkeep",
+      specialties: [
+        "VJ Performance",
+        "Projection Mapping",
+        "Content Creation",
+        "Event Visual Design",
+        "Stage & Lighting Concepts",
+        "Live Visual Direction",
+      ],
     },
   },
 
