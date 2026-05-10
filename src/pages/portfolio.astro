@@ -81,9 +81,6 @@ const portfolioJson = JSON.stringify(portfolio);
 
   // ---------- Lightbox ----------
   const lightbox = document.querySelector("[data-lightbox]");
-  const closeBtn = document.querySelector("[data-lightbox-close]");
-  const prevBtn = document.querySelector("[data-lightbox-prev]");
-  const nextBtn = document.querySelector("[data-lightbox-next]");
   const mediaWrapper = document.querySelector("[data-lightbox-media-wrapper]");
   const catYearEl = document.querySelector("[data-lightbox-cat-year]");
   const titleEl = document.querySelector("[data-lightbox-title]");
@@ -137,7 +134,12 @@ const portfolioJson = JSON.stringify(portfolio);
     lightbox.classList.add("is-open");
     lightbox.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
-    setTimeout(() => closeBtn?.focus(), 50);
+
+    // Focus the close button for keyboard accessibility
+    setTimeout(() => {
+      const closeBtn = lightbox.querySelector("[data-lightbox-close]");
+      closeBtn?.focus();
+    }, 50);
   }
 
   function closeLightbox() {
@@ -170,14 +172,29 @@ const portfolioJson = JSON.stringify(portfolio);
     });
   });
 
-  // Lightbox controls
-  closeBtn?.addEventListener("click", closeLightbox);
-  prevBtn?.addEventListener("click", prevItem);
-  nextBtn?.addEventListener("click", nextItem);
-
-  // Click outside content closes
+  // ---------- Single delegated click handler for ALL lightbox controls ----------
+  // Using .closest() catches clicks on the button OR any child (SVG, line, etc.).
+  // This is the fix for the X button not responding when clicked on the SVG glyph.
   lightbox?.addEventListener("click", (e) => {
-    if (e.target === lightbox) closeLightbox();
+    const target = e.target;
+    if (!target) return;
+
+    if (target.closest("[data-lightbox-close]")) {
+      closeLightbox();
+      return;
+    }
+    if (target.closest("[data-lightbox-prev]")) {
+      prevItem();
+      return;
+    }
+    if (target.closest("[data-lightbox-next]")) {
+      nextItem();
+      return;
+    }
+    // Click on the dark backdrop itself (not on any content)
+    if (target === lightbox) {
+      closeLightbox();
+    }
   });
 
   // Keyboard
