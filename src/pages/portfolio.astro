@@ -52,7 +52,6 @@ const portfolioJson = JSON.stringify(portfolio);
     btn.addEventListener("click", () => {
       const filterId = btn.getAttribute("data-filter-id");
 
-      // Update active state on chips
       filterButtons.forEach((b) => {
         b.classList.remove("is-active");
         b.setAttribute("aria-selected", "false");
@@ -60,7 +59,6 @@ const portfolioJson = JSON.stringify(portfolio);
       btn.classList.add("is-active");
       btn.setAttribute("aria-selected", "true");
 
-      // Filter grid items
       gridItems.forEach((item) => {
         const cat = item.getAttribute("data-category");
         if (filterId === "all" || cat === filterId) {
@@ -70,7 +68,6 @@ const portfolioJson = JSON.stringify(portfolio);
         }
       });
 
-      // Update currentItems for lightbox prev/next
       if (filterId === "all") {
         currentItems = [...PORTFOLIO];
       } else {
@@ -93,7 +90,6 @@ const portfolioJson = JSON.stringify(portfolio);
     if (!mediaWrapper) return;
     const isPlaceholder = item.src.endsWith(".gitkeep");
 
-    // Pause and clear any prior media
     const priorVideo = mediaWrapper.querySelector("video");
     priorVideo?.pause();
     mediaWrapper.innerHTML = "";
@@ -134,8 +130,8 @@ const portfolioJson = JSON.stringify(portfolio);
     lightbox.classList.add("is-open");
     lightbox.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
+    document.body.classList.add("lightbox-open");
 
-    // Focus the close button for keyboard accessibility
     setTimeout(() => {
       const closeBtn = lightbox.querySelector("[data-lightbox-close]");
       closeBtn?.focus();
@@ -147,6 +143,7 @@ const portfolioJson = JSON.stringify(portfolio);
     lightbox.classList.remove("is-open");
     lightbox.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+    document.body.classList.remove("lightbox-open");
     const video = mediaWrapper?.querySelector("video");
     video?.pause();
     lastFocused?.focus();
@@ -172,9 +169,7 @@ const portfolioJson = JSON.stringify(portfolio);
     });
   });
 
-  // ---------- Single delegated click handler for ALL lightbox controls ----------
-  // Using .closest() catches clicks on the button OR any child (SVG, line, etc.).
-  // This is the fix for the X button not responding when clicked on the SVG glyph.
+  // Single delegated click handler for lightbox controls
   lightbox?.addEventListener("click", (e) => {
     const target = e.target;
     if (!target) return;
@@ -191,7 +186,6 @@ const portfolioJson = JSON.stringify(portfolio);
       nextItem();
       return;
     }
-    // Click on the dark backdrop itself (not on any content)
     if (target === lightbox) {
       closeLightbox();
     }
@@ -205,3 +199,17 @@ const portfolioJson = JSON.stringify(portfolio);
     if (e.key === "ArrowLeft") prevItem();
   });
 </script>
+
+<style is:global>
+  /* Hide the site nav while the lightbox is open. The nav has z-50 and lives
+     outside main's z-10 stacking context, so it would otherwise render above
+     the lightbox (z-[200] but bound inside main's z-10) and intercept clicks
+     on the close button. Hiding it sidesteps the stacking issue cleanly. */
+  #site-nav {
+    transition: opacity 0.3s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  body.lightbox-open #site-nav {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
