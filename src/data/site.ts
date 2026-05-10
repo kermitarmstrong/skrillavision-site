@@ -23,13 +23,16 @@ export const site = {
   },
 
   // ---------- About teaser (homepage) ----------
-  // Drop portrait.jpg into /public/media/about/ to replace the placeholder image.
+  // To swap in the real portrait:
+  //   1. Drop portrait.jpg (or any image) into /public/media/about/
+  //   2. Update the `image` value below to point at it (e.g. "/media/about/portrait.jpg")
+  // Until then, the .gitkeep path triggers the styled placeholder card on the homepage.
   about: {
     teaser: {
       headline: "Visual storytelling for live events.",
       body:
         "SkrillaVision creates immersive visual experiences for festivals, clubs, and corporate stages. Every show is built around the energy in the room — projection mapping, custom content, and live VJ performance designed to amplify the moment.",
-      image: "/media/about/portrait.jpg",
+      image: "/media/about/.gitkeep",
       cta: { label: "More about SkrillaVision", href: "/about" },
     },
   },
