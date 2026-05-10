@@ -1,0 +1,41 @@
+---
+import Button from "./Button.astro";
+import { site } from "../data/site";
+
+interface Props {
+  pageName: string;
+  description?: string;
+}
+
+const {
+  pageName,
+  description = "This site is a current work in progress. For current work and booking inquiries, please reach out directly.",
+} = Astro.props;
+---
+
+<section class="min-h-dvh md:min-h-screen flex items-center section-px py-32">
+  <div class="max-w-3xl">
+    <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-6">
+      In development
+    </p>
+    <h1
+      class="font-display font-extrabold text-bone leading-[0.95] text-balance"
+      style="font-size: clamp(2.5rem, 7vw, 5.5rem);"
+    >
+      {pageName} coming soon.
+    </h1>
+    <p class="mt-8 text-ash text-lg md:text-xl text-pretty max-w-2xl">
+      {description}
+    </p>
+    <div class="mt-12 flex flex-col sm:flex-row gap-5">
+      <Button href={`mailto:${site.email}`} variant="primary">
+        Email
+        <span aria-hidden="true">↗</span>
+      </Button>
+      <Button href="/" variant="secondary">
+        Back to home
+        <span aria-hidden="true">→</span>
+      </Button>
+    </div>
+  </div>
+</section>

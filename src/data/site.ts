@@ -14,7 +14,7 @@ export const site = {
   // Until then, a CSS gradient placeholder shows.
   hero: {
     eyebrow: "Live visual artist",
-    headline: "Light that moves with the music.",
+    headline: "Live visuals & production.",
     sub: "Projection mapping, VJ sets, and immersive content for festivals, clubs, and corporate events.",
     video: "/media/hero/hero.mp4",
     poster: "/media/hero/hero-poster.jpg",
