@@ -1,21 +1,69 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { site } from "../data/site";
+import Hero from "../components/Hero.astro";
+import WorkPreview from "../components/WorkPreview.astro";
+import AboutTeaser from "../components/AboutTeaser.astro";
 ---
 
 <BaseLayout>
-  <section class="min-h-screen flex flex-col items-center justify-center section-px text-center">
-    <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-6">
-      System Online
-    </p>
-    <h1 class="font-display text-7xl md:text-9xl font-extrabold text-balance">
-      {site.name}
-    </h1>
-    <p class="mt-6 text-ash text-lg max-w-xl text-balance">
-      Foundation deployed. Hero, gallery, and pages incoming.
-    </p>
-    <div class="mt-12 font-mono text-xs text-smoke">
-      <span class="text-acid">●</span> Phase 1 of 8 complete
-    </div>
-  </section>
+  <Hero />
+  <WorkPreview />
+  <AboutTeaser />
 </BaseLayout>
+
+<!-- Scroll-reveal animations and reduced-motion handling -->
+<script>
+  // Disable hero video autoplay if reduced motion preferred
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll<HTMLVideoElement>("video[autoplay]").forEach((v) => {
+      v.removeAttribute("autoplay");
+      v.pause();
+    });
+  }
+
+  // Intersection observer for [data-reveal] elements
+  const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]");
+  if (reveals.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    reveals.forEach((el) => observer.observe(el));
+  }
+</script>
+
+<style is:global>
+  /* Scroll reveal */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 0.8s var(--ease-out-expo),
+      transform 0.8s var(--ease-out-expo);
+  }
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger siblings inside the work-preview grid */
+  .work-card[data-reveal]:nth-of-type(2) { transition-delay: 0.1s; }
+  .work-card[data-reveal]:nth-of-type(3) { transition-delay: 0.2s; }
+  .work-card[data-reveal]:nth-of-type(4) { transition-delay: 0.3s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

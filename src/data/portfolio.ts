@@ -2,6 +2,8 @@
 // 1. Drop the image or video into /public/media/portfolio/
 // 2. Add an entry below referencing the filename
 // 3. Save — the dev server hot-reloads automatically
+//
+// Items with `featured: true` appear on the homepage's 2×2 work preview grid.
 
 export type PortfolioCategory =
   | "festivals"
@@ -18,25 +20,63 @@ export type PortfolioItem = {
   client?: string;
   location?: string;
   description?: string;
-  // Media: file paths relative to /public, OR external (Vimeo/YouTube) embed URLs
   type: "image" | "video";
   src: string;          // e.g. "/media/portfolio/festival-2024.jpg"
-  poster?: string;      // optional poster image for videos
-  aspect?: "square" | "portrait" | "landscape" | "wide"; // grid hint, default landscape
-  featured?: boolean;   // if true, may appear on homepage preview
+  poster?: string;      // optional poster for videos
+  aspect?: "square" | "portrait" | "landscape" | "wide";
+  featured?: boolean;
 };
 
 export const portfolio: PortfolioItem[] = [
-  // Placeholder — replace once real media is added.
+  // ===== Placeholders — replace these with real work =====
+  // The homepage shows up to 4 featured items. Drop real media into
+  // /public/media/portfolio/, then update each entry's `src` (and `poster`
+  // for videos) to point at the new files.
   {
     id: "placeholder-01",
-    title: "Sample Project",
+    title: "Festival Mainstage",
     category: "festivals",
     year: 2025,
     client: "Replace me",
     location: "Replace me",
     description:
-      "Replace this placeholder once real media is added to /public/media/portfolio/",
+      "Replace with a real project description once media is added to /public/media/portfolio/",
+    type: "image",
+    src: "/media/portfolio/.gitkeep",
+    aspect: "landscape",
+    featured: true,
+  },
+  {
+    id: "placeholder-02",
+    title: "Club Residency",
+    category: "clubs",
+    year: 2025,
+    client: "Replace me",
+    location: "Replace me",
+    type: "image",
+    src: "/media/portfolio/.gitkeep",
+    aspect: "landscape",
+    featured: true,
+  },
+  {
+    id: "placeholder-03",
+    title: "Brand Activation",
+    category: "corporate",
+    year: 2024,
+    client: "Replace me",
+    location: "Replace me",
+    type: "image",
+    src: "/media/portfolio/.gitkeep",
+    aspect: "landscape",
+    featured: true,
+  },
+  {
+    id: "placeholder-04",
+    title: "Architectural Mapping",
+    category: "projection",
+    year: 2024,
+    client: "Replace me",
+    location: "Replace me",
     type: "image",
     src: "/media/portfolio/.gitkeep",
     aspect: "landscape",

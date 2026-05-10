@@ -1,0 +1,62 @@
+---
+import Button from "./Button.astro";
+import { site } from "../data/site";
+
+const { teaser } = site.about;
+const isPlaceholder = teaser.image.endsWith(".gitkeep");
+---
+
+<section class="section-px py-24 md:py-32 relative">
+  <!-- Subtle atmospheric background tint -->
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-transparent via-deck/40 to-transparent pointer-events-none"
+    aria-hidden="true"
+  ></div>
+
+  <div class="relative grid md:grid-cols-2 gap-12 md:gap-20 items-center max-w-7xl mx-auto">
+    <!-- Text -->
+    <div class="order-last md:order-first" data-reveal>
+      <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-4">
+        02 — About
+      </p>
+      <h2 class="font-display text-4xl md:text-6xl font-extrabold leading-[1.05] text-balance">
+        {teaser.headline}
+      </h2>
+      <p class="mt-8 text-ash text-lg md:text-xl text-pretty max-w-xl">
+        {teaser.body}
+      </p>
+      <div class="mt-10">
+        <Button href={teaser.cta.href} variant="primary">
+          {teaser.cta.label}
+          <span aria-hidden="true">→</span>
+        </Button>
+      </div>
+    </div>
+
+    <!-- Image / placeholder -->
+    <div
+      class="relative aspect-[4/5] md:aspect-square overflow-hidden bg-deck border border-edge"
+      data-reveal
+    >
+      {isPlaceholder ? (
+        <div class="absolute inset-0 bg-gradient-to-br from-deck to-night flex items-center justify-center">
+          <div class="text-center px-6">
+            <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-2">
+              Placeholder
+            </p>
+            <p class="font-mono text-xs text-smoke">
+              Drop portrait.jpg into /media/about/
+            </p>
+          </div>
+        </div>
+      ) : (
+        <img
+          src={teaser.image}
+          alt="About SkrillaVision"
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+        />
+      )}
+    </div>
+  </div>
+</section>

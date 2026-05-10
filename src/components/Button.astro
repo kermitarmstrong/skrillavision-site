@@ -1,0 +1,36 @@
+---
+interface Props {
+  href: string;
+  variant?: "primary" | "secondary" | "ghost";
+  external?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  variant = "primary",
+  external = false,
+  class: className = "",
+} = Astro.props;
+
+const variantClasses: Record<string, string> = {
+  primary:
+    "acid-glow inline-flex items-center gap-3 px-8 py-4 border border-acid text-acid font-mono text-sm uppercase tracking-[0.2em] hover:bg-acid hover:text-night transition-all",
+  secondary:
+    "inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.2em] text-bone hover:text-acid transition-colors",
+  ghost:
+    "inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-smoke hover:text-acid transition-colors",
+};
+
+const externalProps = external
+  ? { target: "_blank", rel: "noopener noreferrer" }
+  : {};
+---
+
+<a
+  href={href}
+  class:list={[variantClasses[variant], className]}
+  {...externalProps}
+>
+  <slot />
+</a>
