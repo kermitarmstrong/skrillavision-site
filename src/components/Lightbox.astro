@@ -1,0 +1,87 @@
+<div
+  id="lightbox"
+  class="lightbox fixed inset-0 z-[200] bg-night/95 backdrop-blur-xl"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Project viewer"
+  aria-hidden="true"
+  data-lightbox
+>
+  <!-- Close -->
+  <button
+    type="button"
+    class="absolute top-5 right-5 z-10 flex items-center justify-center w-10 h-10 text-bone hover:text-acid transition-colors"
+    aria-label="Close"
+    data-lightbox-close
+  >
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square">
+      <line x1="6"  y1="6"  x2="18" y2="18" />
+      <line x1="18" y1="6"  x2="6"  y2="18" />
+    </svg>
+  </button>
+
+  <!-- Prev -->
+  <button
+    type="button"
+    class="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-12 h-12 text-bone hover:text-acid transition-colors"
+    aria-label="Previous project"
+    data-lightbox-prev
+  >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">
+      <polyline points="15 18 9 12 15 6" />
+    </svg>
+  </button>
+
+  <!-- Next -->
+  <button
+    type="button"
+    class="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-12 h-12 text-bone hover:text-acid transition-colors"
+    aria-label="Next project"
+    data-lightbox-next
+  >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  </button>
+
+  <!-- Content -->
+  <div class="lightbox-content h-full flex flex-col items-center justify-center px-4 py-16 md:px-20 md:py-20 gap-6 md:gap-8 overflow-y-auto">
+    <div
+      class="lightbox-media-wrapper relative w-full max-w-6xl aspect-[16/10]"
+      data-lightbox-media-wrapper
+    >
+      <!-- Image / video / placeholder injected here at runtime -->
+    </div>
+
+    <div class="lightbox-meta text-center max-w-3xl">
+      <p
+        class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-2"
+        data-lightbox-cat-year
+      ></p>
+      <h2
+        class="font-display text-3xl md:text-4xl font-bold text-bone mb-3 leading-tight"
+        data-lightbox-title
+      ></h2>
+      <p
+        class="font-mono text-sm text-ash mb-3"
+        data-lightbox-client-location
+      ></p>
+      <p
+        class="text-ash text-base text-pretty"
+        data-lightbox-description
+      ></p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lightbox {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease-out-expo);
+  }
+  .lightbox.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>

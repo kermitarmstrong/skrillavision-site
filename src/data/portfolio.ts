@@ -4,6 +4,7 @@
 // 3. Save — the dev server hot-reloads automatically
 //
 // Items with `featured: true` appear on the homepage's 2×2 work preview grid.
+// All items appear on the /portfolio page, filterable by category.
 
 export type PortfolioCategory =
   | "festivals"
@@ -21,34 +22,58 @@ export type PortfolioItem = {
   location?: string;
   description?: string;
   type: "image" | "video";
-  src: string;          // e.g. "/media/portfolio/festival-2024.jpg"
-  poster?: string;      // optional poster for videos
+  src: string;
+  poster?: string;
   aspect?: "square" | "portrait" | "landscape" | "wide";
   featured?: boolean;
 };
 
 export const portfolio: PortfolioItem[] = [
   // ===== Placeholders — replace these with real work =====
-  // The homepage shows up to 4 featured items. Drop real media into
-  // /public/media/portfolio/, then update each entry's `src` (and `poster`
-  // for videos) to point at the new files.
+  // Drop real media into /public/media/portfolio/, then update each entry's
+  // `src` (and `poster` for videos) to point at the new files.
+
+  // ----- Festivals -----
   {
-    id: "placeholder-01",
-    title: "Festival Mainstage",
+    id: "festival-01",
+    title: "Mainstage Mapping",
     category: "festivals",
     year: 2025,
     client: "Replace me",
     location: "Replace me",
-    description:
-      "Replace with a real project description once media is added to /public/media/portfolio/",
+    description: "Replace with a real description.",
     type: "image",
     src: "/media/portfolio/.gitkeep",
     aspect: "landscape",
     featured: true,
   },
   {
-    id: "placeholder-02",
-    title: "Club Residency",
+    id: "festival-02",
+    title: "Sunset Set",
+    category: "festivals",
+    year: 2024,
+    client: "Replace me",
+    location: "Replace me",
+    type: "image",
+    src: "/media/portfolio/.gitkeep",
+    aspect: "landscape",
+  },
+  {
+    id: "festival-03",
+    title: "After Hours Tent",
+    category: "festivals",
+    year: 2024,
+    client: "Replace me",
+    location: "Replace me",
+    type: "image",
+    src: "/media/portfolio/.gitkeep",
+    aspect: "landscape",
+  },
+
+  // ----- Clubs -----
+  {
+    id: "club-01",
+    title: "Resident Visuals",
     category: "clubs",
     year: 2025,
     client: "Replace me",
@@ -59,10 +84,23 @@ export const portfolio: PortfolioItem[] = [
     featured: true,
   },
   {
-    id: "placeholder-03",
+    id: "club-02",
+    title: "Touring Set",
+    category: "clubs",
+    year: 2024,
+    client: "Replace me",
+    location: "Replace me",
+    type: "image",
+    src: "/media/portfolio/.gitkeep",
+    aspect: "landscape",
+  },
+
+  // ----- Corporate -----
+  {
+    id: "corp-01",
     title: "Brand Activation",
     category: "corporate",
-    year: 2024,
+    year: 2025,
     client: "Replace me",
     location: "Replace me",
     type: "image",
@@ -71,7 +109,33 @@ export const portfolio: PortfolioItem[] = [
     featured: true,
   },
   {
-    id: "placeholder-04",
+    id: "corp-02",
+    title: "Conference Keynote",
+    category: "corporate",
+    year: 2024,
+    client: "Replace me",
+    location: "Replace me",
+    type: "image",
+    src: "/media/portfolio/.gitkeep",
+    aspect: "landscape",
+  },
+
+  // ----- Private -----
+  {
+    id: "private-01",
+    title: "Private Event Visuals",
+    category: "private",
+    year: 2025,
+    client: "Replace me",
+    location: "Replace me",
+    type: "image",
+    src: "/media/portfolio/.gitkeep",
+    aspect: "landscape",
+  },
+
+  // ----- Projection Mapping -----
+  {
+    id: "proj-01",
     title: "Architectural Mapping",
     category: "projection",
     year: 2024,
@@ -82,6 +146,17 @@ export const portfolio: PortfolioItem[] = [
     aspect: "landscape",
     featured: true,
   },
+  {
+    id: "proj-02",
+    title: "Product Launch",
+    category: "projection",
+    year: 2025,
+    client: "Replace me",
+    location: "Replace me",
+    type: "image",
+    src: "/media/portfolio/.gitkeep",
+    aspect: "landscape",
+  },
 ];
 
 export const categories: { id: PortfolioCategory | "all"; label: string }[] = [
@@ -89,6 +164,6 @@ export const categories: { id: PortfolioCategory | "all"; label: string }[] = [
   { id: "festivals",  label: "Festivals" },
   { id: "clubs",      label: "Clubs" },
   { id: "corporate",  label: "Corporate" },
-  { id: "private",    label: "Private Events" },
-  { id: "projection", label: "Projection Mapping" },
+  { id: "private",    label: "Private" },
+  { id: "projection", label: "Projection" },
 ];

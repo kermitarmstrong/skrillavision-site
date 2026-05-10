@@ -1,0 +1,54 @@
+---
+import { portfolio } from "../data/portfolio";
+---
+
+<div
+  class="portfolio-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4"
+  data-portfolio-grid
+>
+  {portfolio.map((item) => {
+    const isPlaceholder = item.src.endsWith(".gitkeep");
+    const imgSrc = item.type === "video" ? item.poster : item.src;
+
+    return (
+      <button
+        type="button"
+        class="portfolio-item group relative block aspect-[4/3] overflow-hidden bg-deck border border-edge w-full text-left cursor-pointer"
+        data-category={item.category}
+        data-id={item.id}
+        aria-label={`Open ${item.title}`}
+      >
+        {isPlaceholder ? (
+          <div class="absolute inset-0 bg-gradient-to-br from-deck to-night flex items-center justify-center">
+            <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid">
+              Placeholder
+            </p>
+          </div>
+        ) : (
+          <img
+            src={imgSrc}
+            alt={item.title}
+            loading="lazy"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        )}
+
+        <!-- Hover overlay -->
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-night via-night/50 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"
+          aria-hidden="true"
+        ></div>
+
+        <!-- Card meta -->
+        <div class="absolute inset-x-0 bottom-0 p-4 md:p-5">
+          <p class="font-mono text-[0.625rem] md:text-xs uppercase tracking-[0.3em] text-acid mb-1">
+            {item.category} · {item.year}
+          </p>
+          <h3 class="font-display text-base md:text-lg font-bold text-bone leading-tight">
+            {item.title}
+          </h3>
+        </div>
+      </button>
+    );
+  })}
+</div>

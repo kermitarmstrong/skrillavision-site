@@ -1,0 +1,35 @@
+---
+import { categories } from "../data/portfolio";
+---
+
+<div
+  class="filter-chips flex flex-wrap gap-2 md:gap-3 mb-12 md:mb-16"
+  role="tablist"
+  aria-label="Filter portfolio by category"
+  data-portfolio-filter
+>
+  {categories.map((cat) => (
+    <button
+      type="button"
+      role="tab"
+      data-filter-id={cat.id}
+      aria-selected={cat.id === "all" ? "true" : "false"}
+      class:list={[
+        "filter-chip px-4 py-2 border font-mono text-xs uppercase tracking-[0.2em] transition-all",
+        cat.id === "all"
+          ? "is-active bg-acid border-acid text-night"
+          : "border-edge text-bone hover:border-acid hover:text-acid",
+      ]}
+    >
+      {cat.label}
+    </button>
+  ))}
+</div>
+
+<style>
+  .filter-chip.is-active {
+    background-color: var(--color-acid);
+    color: var(--color-night);
+    border-color: var(--color-acid);
+  }
+</style>

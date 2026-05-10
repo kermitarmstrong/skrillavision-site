@@ -1,8 +1,190 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ComingSoon from "../components/ComingSoon.astro";
+import PortfolioFilter from "../components/PortfolioFilter.astro";
+import PortfolioGrid from "../components/PortfolioGrid.astro";
+import Lightbox from "../components/Lightbox.astro";
+import { portfolio } from "../data/portfolio";
+
+const portfolioJson = JSON.stringify(portfolio);
 ---
 
-<BaseLayout title="Work">
-  <ComingSoon pageName="Work" />
+<BaseLayout
+  title="Work"
+  description="Selected work from SkrillaVision — live event visuals, projection mapping, VJ sets, and content production."
+>
+  <!-- Page header -->
+  <section class="section-px pt-32 pb-12 md:pt-40 md:pb-16">
+    <div class="max-w-7xl mx-auto">
+      <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-4">
+        {portfolio.length} Projects
+      </p>
+      <h1 class="font-display text-5xl md:text-7xl font-extrabold leading-[0.95] text-balance">
+        Selected Work
+      </h1>
+    </div>
+  </section>
+
+  <!-- Filter + Grid -->
+  <section class="section-px pb-32">
+    <div class="max-w-7xl mx-auto">
+      <PortfolioFilter />
+      <PortfolioGrid />
+    </div>
+  </section>
+
+  <!-- Lightbox modal (markup only; logic below) -->
+  <Lightbox />
 </BaseLayout>
+
+<script define:vars={{ portfolioJson }}>
+  // Hydrate portfolio data on the client
+  const PORTFOLIO = JSON.parse(portfolioJson);
+
+  // Track which subset of items is currently shown by the filter
+  let currentItems = [...PORTFOLIO];
+  let currentIndex = 0;
+
+  // ---------- Filter ----------
+  const filterButtons = document.querySelectorAll(".filter-chip");
+  const gridItems = document.querySelectorAll(".portfolio-item");
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const filterId = btn.getAttribute("data-filter-id");
+
+      // Update active state on chips
+      filterButtons.forEach((b) => {
+        b.classList.remove("is-active");
+        b.setAttribute("aria-selected", "false");
+      });
+      btn.classList.add("is-active");
+      btn.setAttribute("aria-selected", "true");
+
+      // Filter grid items
+      gridItems.forEach((item) => {
+        const cat = item.getAttribute("data-category");
+        if (filterId === "all" || cat === filterId) {
+          item.style.display = "";
+        } else {
+          item.style.display = "none";
+        }
+      });
+
+      // Update currentItems for lightbox prev/next
+      if (filterId === "all") {
+        currentItems = [...PORTFOLIO];
+      } else {
+        currentItems = PORTFOLIO.filter((p) => p.category === filterId);
+      }
+    });
+  });
+
+  // ---------- Lightbox ----------
+  const lightbox = document.querySelector("[data-lightbox]");
+  const closeBtn = document.querySelector("[data-lightbox-close]");
+  const prevBtn = document.querySelector("[data-lightbox-prev]");
+  const nextBtn = document.querySelector("[data-lightbox-next]");
+  const mediaWrapper = document.querySelector("[data-lightbox-media-wrapper]");
+  const catYearEl = document.querySelector("[data-lightbox-cat-year]");
+  const titleEl = document.querySelector("[data-lightbox-title]");
+  const clientLocEl = document.querySelector("[data-lightbox-client-location]");
+  const descEl = document.querySelector("[data-lightbox-description]");
+
+  let lastFocused = null;
+
+  function renderItem(item) {
+    if (!mediaWrapper) return;
+    const isPlaceholder = item.src.endsWith(".gitkeep");
+
+    // Pause and clear any prior media
+    const priorVideo = mediaWrapper.querySelector("video");
+    priorVideo?.pause();
+    mediaWrapper.innerHTML = "";
+
+    if (isPlaceholder) {
+      mediaWrapper.innerHTML =
+        '<div class="absolute inset-0 bg-gradient-to-br from-deck to-night flex items-center justify-center border border-edge">' +
+        '<div class="text-center px-6">' +
+        '<p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-2">Placeholder</p>' +
+        '<p class="font-mono text-xs text-smoke">Drop ' + item.type + ' into /media/portfolio/</p>' +
+        "</div></div>";
+    } else if (item.type === "video") {
+      mediaWrapper.innerHTML =
+        '<video class="absolute inset-0 w-full h-full object-contain" controls autoplay playsinline poster="' +
+        (item.poster || "") +
+        '"><source src="' + item.src + '" type="video/mp4" /></video>';
+    } else {
+      mediaWrapper.innerHTML =
+        '<img src="' + item.src + '" alt="' + (item.title || "") + '" class="absolute inset-0 w-full h-full object-contain" />';
+    }
+
+    if (catYearEl) catYearEl.textContent = item.category + " · " + item.year;
+    if (titleEl) titleEl.textContent = item.title || "";
+
+    const cl = [item.client, item.location].filter(Boolean).join(" · ");
+    if (clientLocEl) clientLocEl.textContent = cl;
+    if (descEl) descEl.textContent = item.description || "";
+  }
+
+  function openLightbox(itemId) {
+    if (!lightbox) return;
+    const idx = currentItems.findIndex((p) => p.id === itemId);
+    if (idx < 0) return;
+
+    currentIndex = idx;
+    renderItem(currentItems[currentIndex]);
+    lastFocused = document.activeElement;
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => closeBtn?.focus(), 50);
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    const video = mediaWrapper?.querySelector("video");
+    video?.pause();
+    lastFocused?.focus();
+  }
+
+  function nextItem() {
+    if (currentItems.length === 0) return;
+    currentIndex = (currentIndex + 1) % currentItems.length;
+    renderItem(currentItems[currentIndex]);
+  }
+
+  function prevItem() {
+    if (currentItems.length === 0) return;
+    currentIndex = (currentIndex - 1 + currentItems.length) % currentItems.length;
+    renderItem(currentItems[currentIndex]);
+  }
+
+  // Wire up grid clicks
+  gridItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const id = item.getAttribute("data-id");
+      if (id) openLightbox(id);
+    });
+  });
+
+  // Lightbox controls
+  closeBtn?.addEventListener("click", closeLightbox);
+  prevBtn?.addEventListener("click", prevItem);
+  nextBtn?.addEventListener("click", nextItem);
+
+  // Click outside content closes
+  lightbox?.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox?.classList.contains("is-open")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowRight") nextItem();
+    if (e.key === "ArrowLeft") prevItem();
+  });
+</script>
