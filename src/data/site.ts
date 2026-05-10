@@ -53,6 +53,54 @@ export const site = {
     },
   },
 
+  // ---------- Services page ----------
+  // Edit titles, descriptions, and pricing copy below to customize.
+  services: {
+    eyebrow: "Services",
+    headline: "Visual production at every scale.",
+    intro:
+      "Live visuals, projection mapping, content creation, and event direction. Placeholder copy — full descriptions and case studies coming soon.",
+    list: [
+      {
+        title: "VJ Performance",
+        description:
+          "Live visual mixing synced to music. Real-time performance for clubs, festivals, and tour dates.",
+      },
+      {
+        title: "Projection Mapping",
+        description:
+          "Custom-mapped visuals on stages, walls, sculptures, and architectural surfaces.",
+      },
+      {
+        title: "Content Creation",
+        description:
+          "Custom visual content built specifically for your show, brand, or event theme.",
+      },
+      {
+        title: "Visual Direction",
+        description:
+          "End-to-end visual concept, design, and execution for major events.",
+      },
+      {
+        title: "Stage & Lighting Concepts",
+        description:
+          "Coordinated visual and lighting design that complements the performance.",
+      },
+      {
+        title: "Event Production Support",
+        description:
+          "Full visual production — from concept through execution night-of.",
+      },
+    ],
+    pricing: {
+      eyebrow: "Pricing",
+      headline: "Custom quotes per project.",
+      body:
+        "Every event is different. Send the details — venue, date, scope — and we'll put together a tailored quote.",
+      cta: { label: "Request a quote", href: "/contact" },
+    },
+  },
+
   // ---------- Socials ----------
   socials: [
     { label: "Instagram", url: "https://instagram.com/skrillavision", handle: "@skrillavision" },

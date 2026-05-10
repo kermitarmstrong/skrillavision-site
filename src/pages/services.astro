@@ -1,8 +1,77 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ComingSoon from "../components/ComingSoon.astro";
+import Button from "../components/Button.astro";
+import { site } from "../data/site";
+
+const { services } = site;
 ---
 
-<BaseLayout title="Services">
-  <ComingSoon pageName="Services" />
+<BaseLayout title="Services" description={services.intro}>
+  <!-- Page header -->
+  <section class="section-px pt-32 pb-16 md:pt-40 md:pb-20">
+    <div class="max-w-5xl mx-auto">
+      <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-4">
+        {services.eyebrow}
+      </p>
+      <h1 class="font-display text-5xl md:text-7xl font-extrabold leading-[0.95] text-balance mb-8">
+        {services.headline}
+      </h1>
+      <p class="text-ash text-lg md:text-xl text-pretty max-w-2xl">
+        {services.intro}
+      </p>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="section-px py-16 md:py-24">
+    <div class="max-w-7xl mx-auto">
+      <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-4">
+        01 — Offerings
+      </p>
+      <h2 class="font-display text-4xl md:text-6xl font-extrabold mb-12 md:mb-16 leading-[1.05] text-balance">
+        What I offer.
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        {services.list.map((service, i) => (
+          <div class="service-card relative p-6 md:p-10 border border-edge bg-deck/30 transition-all duration-300 hover:border-acid hover:bg-deck">
+            <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-4">
+              {String(i + 1).padStart(2, "0")}
+            </p>
+            <h3 class="font-display text-2xl md:text-3xl font-bold mb-4 leading-tight text-bone">
+              {service.title}
+            </h3>
+            <p class="text-ash text-base md:text-lg text-pretty">
+              {service.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section-px py-16 md:py-24 relative">
+    <!-- Subtle atmospheric tint -->
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-transparent via-deck/30 to-transparent pointer-events-none"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative max-w-4xl mx-auto text-center">
+      <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-4">
+        02 — {services.pricing.eyebrow}
+      </p>
+      <h2 class="font-display text-4xl md:text-6xl font-extrabold mb-8 leading-[1.05] text-balance">
+        {services.pricing.headline}
+      </h2>
+      <p class="text-ash text-lg md:text-xl text-pretty mb-10 max-w-2xl mx-auto">
+        {services.pricing.body}
+      </p>
+      <Button href={services.pricing.cta.href} variant="primary">
+        {services.pricing.cta.label}
+        <span aria-hidden="true">→</span>
+      </Button>
+    </div>
+  </section>
 </BaseLayout>
