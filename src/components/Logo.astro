@@ -1,0 +1,54 @@
+---
+interface Props {
+  class?: string;
+  size?: "sm" | "md" | "lg";
+}
+
+const { class: className = "", size = "md" } = Astro.props;
+
+const sizeMap = {
+  sm: { svg: "h-5 w-5", text: "text-sm" },
+  md: { svg: "h-7 w-7", text: "text-lg" },
+  lg: { svg: "h-10 w-10", text: "text-2xl" },
+};
+
+const { svg: svgSize, text: textSize } = sizeMap[size];
+---
+
+<div class:list={["logo flex items-center gap-2.5", className]}>
+  <svg
+    viewBox="0 0 32 32"
+    class:list={[svgSize, "text-acid logo-bars flex-shrink-0"]}
+    aria-hidden="true"
+    fill="currentColor"
+  >
+    <rect x="6"  y="12" width="3" height="8" />
+    <rect x="11" y="8"  width="3" height="16" />
+    <rect x="16" y="14" width="3" height="4" />
+    <rect x="21" y="6"  width="3" height="20" />
+  </svg>
+  <span
+    class:list={[
+      "font-display font-bold text-bone tracking-tight uppercase leading-none",
+      textSize,
+    ]}
+  >
+    SkrillaVision
+  </span>
+</div>
+
+<style is:global>
+  /* Equalizer hover animation — when an ancestor with .logo-link is hovered,
+     the four bars dance like a VU meter. Adds personality without being noisy. */
+  .logo-bars rect {
+    transform-origin: bottom;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .logo-link:hover .logo-bars rect:nth-child(1) { transform: scaleY(1.4); }
+  .logo-link:hover .logo-bars rect:nth-child(2) { transform: scaleY(0.55); }
+  .logo-link:hover .logo-bars rect:nth-child(3) {
+    transform: scaleY(2.5);
+    transform-origin: center;
+  }
+  .logo-link:hover .logo-bars rect:nth-child(4) { transform: scaleY(0.8); }
+</style>

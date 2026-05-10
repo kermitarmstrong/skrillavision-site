@@ -1,0 +1,189 @@
+---
+import Logo from "./Logo.astro";
+import { site } from "../data/site";
+
+const currentPath = Astro.url.pathname;
+
+const isActive = (href: string) => {
+  if (href === "/") return currentPath === "/";
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+};
+---
+
+<nav
+  id="site-nav"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  data-nav
+  aria-label="Primary"
+>
+  <div class="section-px flex items-center justify-between py-5">
+    <!-- Logo (links home) -->
+    <a href="/" class="logo-link" aria-label={`${site.name} — home`}>
+      <Logo size="md" />
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-10">
+      {site.nav.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              "font-mono text-xs uppercase tracking-[0.2em] transition-colors duration-200",
+              isActive(item.href)
+                ? "text-acid"
+                : "text-bone hover:text-acid",
+            ]}
+            aria-current={isActive(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile menu toggle -->
+    <button
+      type="button"
+      class="md:hidden flex items-center justify-center w-10 h-10 text-bone hover:text-acid transition-colors"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-menu-toggle
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square">
+        <line x1="3" y1="9"  x2="21" y2="9"  />
+        <line x1="3" y1="16" x2="21" y2="16" />
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu overlay -->
+<div
+  id="mobile-menu"
+  class="mobile-menu fixed inset-0 z-[60] bg-night/95 backdrop-blur-xl"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Mobile navigation"
+  aria-hidden="true"
+  data-mobile-menu
+>
+  <button
+    type="button"
+    class="absolute top-5 right-5 flex items-center justify-center w-10 h-10 text-bone hover:text-acid transition-colors"
+    aria-label="Close menu"
+    data-menu-close
+  >
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square">
+      <line x1="6"  y1="6"  x2="18" y2="18" />
+      <line x1="18" y1="6"  x2="6"  y2="18" />
+    </svg>
+  </button>
+
+  <ul class="flex flex-col items-center justify-center min-h-screen gap-8">
+    {site.nav.map((item, i) => (
+      <li class="mobile-menu-item" style={`--i:${i}`}>
+        <a
+          href={item.href}
+          class:list={[
+            "font-display text-5xl font-bold tracking-tight transition-colors",
+            isActive(item.href)
+              ? "text-acid"
+              : "text-bone hover:text-acid",
+          ]}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  /* Backdrop appears once .is-scrolled is added (handled in script) */
+  nav[data-nav].is-scrolled {
+    background-color: color-mix(in srgb, var(--color-night) 80%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-edge);
+  }
+
+  /* Mobile menu transitions */
+  .mobile-menu {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease-out-expo);
+  }
+  .mobile-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Staggered link reveal */
+  .mobile-menu-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.5s var(--ease-out-expo),
+      transform 0.5s var(--ease-out-expo);
+    transition-delay: calc(0.08s * var(--i, 0));
+  }
+  .mobile-menu.is-open .mobile-menu-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  // ---------- Sticky nav backdrop on scroll ----------
+  const nav = document.querySelector<HTMLElement>("[data-nav]");
+  if (nav) {
+    const handleScroll = () => {
+      if (window.scrollY > 20) nav.classList.add("is-scrolled");
+      else nav.classList.remove("is-scrolled");
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+  }
+
+  // ---------- Mobile menu ----------
+  const menuToggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const menuClose  = document.querySelector<HTMLButtonElement>("[data-menu-close]");
+  const mobileMenu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+
+  let lastFocused: HTMLElement | null = null;
+
+  const openMenu = () => {
+    if (!mobileMenu || !menuToggle) return;
+    lastFocused = document.activeElement as HTMLElement;
+    mobileMenu.classList.add("is-open");
+    mobileMenu.setAttribute("aria-hidden", "false");
+    menuToggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => menuClose?.focus(), 50);
+  };
+
+  const closeMenu = () => {
+    if (!mobileMenu || !menuToggle) return;
+    mobileMenu.classList.remove("is-open");
+    mobileMenu.setAttribute("aria-hidden", "true");
+    menuToggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+    lastFocused?.focus();
+  };
+
+  menuToggle?.addEventListener("click", openMenu);
+  menuClose?.addEventListener("click", closeMenu);
+
+  mobileMenu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && mobileMenu?.classList.contains("is-open")) {
+      closeMenu();
+    }
+  });
+</script>

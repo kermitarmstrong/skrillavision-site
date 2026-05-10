@@ -1,0 +1,111 @@
+---
+import Logo from "./Logo.astro";
+import { site } from "../data/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative section-px section-py border-t border-edge mt-32">
+  <!-- Booking CTA -->
+  <div class="max-w-5xl mx-auto text-center mb-24">
+    <p class="font-mono text-xs uppercase tracking-[0.3em] text-acid mb-6">
+      Booking inquiries
+    </p>
+    <h2 class="font-display text-5xl md:text-7xl font-extrabold text-balance leading-[1.05]">
+      Got an event?<br />
+      <span class="text-acid">Let's make it unforgettable.</span>
+    </h2>
+    <a
+      href="/contact"
+      class="acid-glow inline-flex items-center gap-3 mt-10 px-8 py-4 border border-acid text-acid font-mono text-sm uppercase tracking-[0.2em] hover:bg-acid hover:text-night transition-all"
+    >
+      Start a project
+      <span aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+
+  <!-- Divider -->
+  <div class="w-full h-px bg-edge mb-12" aria-hidden="true"></div>
+
+  <!-- Meta row -->
+  <div class="grid md:grid-cols-3 gap-12 md:gap-8">
+    <!-- Logo + email -->
+    <div>
+      <a href="/" class="logo-link inline-block mb-6" aria-label={`${site.name} — home`}>
+        <Logo size="md" />
+      </a>
+      <div>
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-smoke mb-2">
+          Direct
+        </p>
+        <a
+          href={`mailto:${site.email}`}
+          class="font-mono text-sm text-ash hover:text-acid transition-colors"
+        >
+          {site.email}
+        </a>
+      </div>
+    </div>
+
+    <!-- Nav links -->
+    <div>
+      <p class="font-mono text-xs uppercase tracking-[0.2em] text-smoke mb-4">
+        Navigation
+      </p>
+      <ul class="space-y-2">
+        {site.nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="text-ash hover:text-acid transition-colors"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Socials -->
+    <div>
+      <p class="font-mono text-xs uppercase tracking-[0.2em] text-smoke mb-4">
+        Follow
+      </p>
+      <ul class="space-y-2">
+        {site.socials.map((social) => (
+          <li>
+            <a
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-ash hover:text-acid transition-colors inline-flex items-center gap-2"
+            >
+              {social.label}
+              <span class="text-xs" aria-hidden="true">&nearr;</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="mt-16 pt-8 border-t border-edge flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <p class="font-mono text-xs text-smoke">
+      &copy; {year} {site.name}. All rights reserved.
+    </p>
+    <button
+      type="button"
+      class="font-mono text-xs uppercase tracking-[0.2em] text-smoke hover:text-acid transition-colors"
+      data-back-to-top
+    >
+      &uarr; Back to top
+    </button>
+  </div>
+</footer>
+
+<script>
+  document.querySelector<HTMLButtonElement>("[data-back-to-top]")?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
